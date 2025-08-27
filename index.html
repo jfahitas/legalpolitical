@@ -1,0 +1,169 @@
+import React, { useState } from 'react';
+import { Cloud, CloudLightning, Users, Network, Bell, Shield, Repeat, Compass, CheckCircle } from 'lucide-react';
+
+export default function App() {
+  const [view, setView] = useState('weather'); // 'weather', 'political', 'both'
+
+  // Define color schemes
+  const politicalColors = {
+    primary: 'bg-[#500000]',
+    text: 'text-gray-200',
+    title: 'text-gray-100',
+    cardBorder: 'border-[#804040]',
+    icon: 'text-gray-200',
+    hover: 'hover:bg-[#804040]'
+  };
+
+  const weatherColors = {
+    primary: 'bg-indigo-600',
+    text: 'text-white',
+    title: 'text-white',
+    cardBorder: 'border-indigo-400',
+    icon: 'text-white',
+    hover: 'hover:bg-indigo-700'
+  };
+
+  const currentColors = view === 'political' ? politicalColors : weatherColors;
+  const secondaryColors = view === 'weather' ? politicalColors : weatherColors;
+
+  const Card = ({ title, icon, description, isPolitical }) => {
+    const cardColors = isPolitical ? politicalColors : weatherColors;
+    const cardBg = view === 'both' ? 'bg-white bg-opacity-5' : 'bg-white bg-opacity-10';
+    const cardBorder = view === 'both' ? 'border-gray-400' : cardColors.cardBorder;
+
+    return (
+      <div
+        className={`p-4 rounded-3xl shadow-lg border ${cardBorder} ${cardBg} transform hover:scale-105 transition-transform duration-300 relative`}
+      >
+        <div className="flex items-center mb-4">
+          {icon}
+          <h3 className={`text-xl font-bold ml-3 ${cardColors.title}`}>{title}</h3>
+        </div>
+        <p className={`text-sm md:text-base leading-relaxed ${cardColors.text}`}>{description}</p>
+      </div>
+    );
+  };
+
+  const WeatherView = () => (
+    <div className={`space-y-6 ${view === 'both' ? '' : 'flex flex-col items-stretch'}`}>
+      <div className={`flex flex-col items-center ${view === 'both' ? 'hidden' : ''}`}>
+        <div className={`rounded-full p-6 mb-4 shadow-lg transition-colors duration-700 ${weatherColors.primary}`}>
+          <CloudLightning className="w-16 h-16 text-white animate-pulse" />
+        </div>
+        <h2 className={`text-2xl font-bold text-center mb-4 transition-colors duration-700 ${weatherColors.title}`}>
+          Emergency Management
+        </h2>
+      </div>
+      
+      <Card
+        isPolitical={false}
+        title="Pattern Recognition"
+        icon={<Cloud className={`w-6 h-6 ${weatherColors.icon}`} />}
+        description="Identifying weather conditions that could affect emergency operations, like a cold front meeting a warm front."
+      />
+      <Card
+        isPolitical={false}
+        title="Early Warning Systems"
+        icon={<Bell className={`w-6 h-6 ${weatherColors.icon}`} />}
+        description="Information networks like doppler radar and satellite imagery that provide advance notice of storms."
+      />
+      <Card
+        isPolitical={false}
+        title="Adaptive Preparation"
+        icon={<Repeat className={`w-6 h-6 ${weatherColors.icon}`} />}
+        description="Adjusting emergency plans and resource allocation based on a storm's shift in direction."
+      />
+      <Card
+        isPolitical={false}
+        title="Professional Service"
+        icon={<Shield className={`w-6 h-6 ${weatherColors.icon}`} />}
+        description="Using meteorological intelligence to serve community safety, not for personal or political gain."
+      />
+    </div>
+  );
+
+  const PoliticalView = () => (
+    <div className={`space-y-6 ${view === 'both' ? '' : 'flex flex-col items-stretch'}`}>
+      <div className={`flex flex-col items-center ${view === 'both' ? 'hidden' : ''}`}>
+        <div className={`rounded-full p-6 mb-4 shadow-lg transition-colors duration-700 ${politicalColors.primary}`}>
+          <Users className="w-16 h-16 text-white animate-pulse" />
+        </div>
+        <h2 className={`text-2xl font-bold text-center mb-4 transition-colors duration-700 ${politicalColors.title}`}>
+          Executive Leadership
+        </h2>
+      </div>
+
+      <Card
+        isPolitical={true}
+        title="Pattern Recognition"
+        icon={<Network className={`w-6 h-6 ${politicalColors.icon}`} />}
+        description="Identifying political conditions that could affect coordination sustainability, such as a shift in a key stakeholder's support."
+      />
+      <Card
+        isPolitical={true}
+        title="Early Warning Systems"
+        icon={<Compass className={`w-6 h-6 ${politicalColors.icon}`} />}
+        description="Information networks like key relationships and open-source data that provide advance notice of political shifts."
+      />
+      <Card
+        isPolitical={true}
+        title="Adaptive Preparation"
+        icon={<Repeat className={`w-6 h-6 ${politicalColors.icon}`} />}
+        description="Adjusting executive approaches and communication strategies based on changing political dynamics."
+      />
+      <Card
+        isPolitical={true}
+        title="Professional Service"
+        icon={<CheckCircle className={`w-6 h-6 ${politicalColors.icon}`} />}
+        description="Using political intelligence to serve the organization's mission and community, not for personal advantage."
+      />
+    </div>
+  );
+
+  return (
+    <div className={`min-h-screen font-sans p-4 sm:p-8 flex items-center justify-center transition-colors duration-700
+      ${view === 'political' ? 'bg-gradient-to-br from-[#150000] to-[#500000]' : 'bg-gradient-to-br from-[#300000] to-[#500000]'}`}>
+      <div className="w-full max-w-4xl mx-auto py-8">
+        <header className="text-center mb-12">
+          <h1 className={`text-3xl sm:text-4xl font-extrabold leading-tight mb-2 transition-colors duration-700 ${currentColors.title}`}>
+            {view === 'political' ? 'Political Intelligence' : view === 'weather' ? 'Weather Monitoring' : 'Political Intelligence as Weather Monitoring'}
+          </h1>
+          <p className={`text-lg max-w-2xl mx-auto transition-colors duration-700 ${currentColors.text}`}>
+            {view === 'political'
+              ? 'Monitoring political dynamics to prepare for coordination challenges.'
+              : view === 'weather'
+                ? 'Monitoring weather patterns to prepare for storms and emergencies.'
+                : 'A comparative view of both concepts.'
+            }
+          </p>
+        </header>
+
+        <div className="flex justify-center items-center mb-12 space-x-4 flex-wrap gap-2">
+          <button
+            onClick={() => setView('weather')}
+            className={`px-6 py-3 rounded-full font-semibold text-lg transition-colors duration-300 ${view === 'weather' ? 'bg-white text-[#500000] shadow-lg' : 'bg-white bg-opacity-20 text-white hover:bg-opacity-30'}`}
+          >
+            Weather Monitoring
+          </button>
+          <button
+            onClick={() => setView('political')}
+            className={`px-6 py-3 rounded-full font-semibold text-lg transition-colors duration-300 ${view === 'political' ? 'bg-white text-[#500000] shadow-lg' : 'bg-white bg-opacity-20 text-white hover:bg-opacity-30'}`}
+          >
+            Political Intelligence
+          </button>
+          <button
+            onClick={() => setView('both')}
+            className={`px-6 py-3 rounded-full font-semibold text-lg transition-colors duration-300 ${view === 'both' ? 'bg-white text-gray-800 shadow-lg' : 'bg-white bg-opacity-20 text-white hover:bg-opacity-30'}`}
+          >
+            Comparative View
+          </button>
+        </div>
+        
+        <div className={`grid grid-cols-1 md:grid-cols-${view === 'both' ? '2' : '1'} gap-8 items-stretch`}>
+          {(view === 'weather' || view === 'both') && <WeatherView />}
+          {(view === 'political' || view === 'both') && <PoliticalView />}
+        </div>
+      </div>
+    </div>
+  );
+}
