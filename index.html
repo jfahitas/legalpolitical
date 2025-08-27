@@ -6,128 +6,273 @@
     <title>Political Intelligence Visualizer</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-      :root {
-        --color-political-1: #150000;
-        --color-political-2: #500000;
-        --color-weather-1: #300000;
-        --color-weather-2: #500000;
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
       }
+      
       body {
-        font-family: 'Inter', sans-serif;
-        transition: background-color 0.7s, background-image 0.7s;
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+        min-height: 100vh;
+        transition: background 0.7s ease;
+        color: #e2e8f0;
       }
-      .bg-gradient-weather {
-        background-image: linear-gradient(to bottom right, var(--color-weather-1), var(--color-weather-2));
+      
+      .bg-weather {
+        background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
       }
-      .bg-gradient-political {
-        background-image: linear-gradient(to bottom right, var(--color-political-1), var(--color-political-2));
+      
+      .bg-political {
+        background: linear-gradient(135deg, #1a0000 0%, #500000 100%);
       }
-      .animate-pulse-light {
-        animation: pulse-light 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+      
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 2rem;
       }
-      @keyframes pulse-light {
-        0%, 100% { opacity: 1; }
-        50% { opacity: .7; }
+      
+      .header {
+        text-align: center;
+        margin-bottom: 3rem;
+      }
+      
+      .title {
+        font-size: 2.5rem;
+        font-weight: bold;
+        margin-bottom: 0.5rem;
+        color: white;
+      }
+      
+      .description {
+        font-size: 1.125rem;
+        color: #cbd5e1;
+      }
+      
+      .buttons {
+        display: flex;
+        justify-content: center;
+        gap: 1rem;
+        margin-bottom: 3rem;
+        flex-wrap: wrap;
+      }
+      
+      .btn {
+        padding: 0.75rem 1.5rem;
+        border-radius: 9999px;
+        font-weight: 600;
+        font-size: 1rem;
+        border: none;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+      
+      .btn-active {
+        background: white;
+        color: #1e293b;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+      }
+      
+      .btn-inactive {
+        background: rgba(255,255,255,0.2);
+        color: white;
+      }
+      
+      .btn-inactive:hover {
+        background: rgba(255,255,255,0.3);
+        transform: scale(1.05);
+      }
+      
+      .content {
+        display: grid;
+        gap: 2rem;
+      }
+      
+      .single-column {
+        grid-template-columns: 1fr;
+      }
+      
+      .two-columns {
+        grid-template-columns: 1fr;
+      }
+      
+      @media (min-width: 768px) {
+        .two-columns {
+          grid-template-columns: 1fr 1fr;
+        }
+      }
+      
+      .category-header {
+        text-align: center;
+        margin-bottom: 2rem;
+      }
+      
+      .icon-container {
+        display: inline-flex;
+        padding: 1.5rem;
+        border-radius: 50%;
+        margin-bottom: 1rem;
+        box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+      }
+      
+      .icon-weather {
+        background: linear-gradient(135deg, #3b82f6, #1e40af);
+      }
+      
+      .icon-political {
+        background: linear-gradient(135deg, #f59e0b, #d97706);
+      }
+      
+      .category-title {
+        font-size: 1.75rem;
+        font-weight: bold;
+        color: white;
+        margin-bottom: 0.5rem;
+      }
+      
+      .category-subtitle {
+        color: #cbd5e1;
+      }
+      
+      .cards-grid {
+        display: grid;
+        gap: 1.5rem;
+      }
+      
+      @media (min-width: 768px) {
+        .cards-grid {
+          grid-template-columns: 1fr 1fr;
+        }
+      }
+      
+      .card {
+        background: rgba(255,255,255,0.05);
+        border: 1px solid rgba(255,255,255,0.1);
+        border-radius: 1rem;
+        padding: 1.5rem;
+        transition: all 0.3s ease;
+        backdrop-filter: blur(10px);
+      }
+      
+      .card:hover {
+        background: rgba(255,255,255,0.1);
+        transform: translateY(-4px);
+        box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+      }
+      
+      .card-header {
+        display: flex;
+        align-items: center;
+        margin-bottom: 1rem;
+      }
+      
+      .card-icon {
+        margin-right: 1rem;
+      }
+      
+      .card-title {
+        font-size: 1.25rem;
+        font-weight: bold;
+        color: white;
+      }
+      
+      .card-description {
+        color: #cbd5e1;
+        line-height: 1.6;
+      }
+      
+      .icon-pulse {
+        animation: pulse 3s ease-in-out infinite;
+      }
+      
+      @keyframes pulse {
+        0%, 100% { 
+          opacity: 1;
+          transform: scale(1);
+        }
+        50% { 
+          opacity: 0.8;
+          transform: scale(1.05);
+        }
       }
     </style>
 </head>
-<body class="bg-gradient-weather text-gray-200">
+<body class="bg-weather">
 
-<div class="min-h-screen font-sans p-4 sm:p-8 flex items-center justify-center">
-  <div class="w-full max-w-4xl mx-auto py-8">
-    <header class="text-center mb-12">
-      <h1 id="main-title" class="text-3xl sm:text-4xl font-extrabold leading-tight mb-2 transition-colors duration-700 text-white">
-        Weather Monitoring
-      </h1>
-      <p id="main-description" class="text-lg max-w-2xl mx-auto transition-colors duration-700 text-gray-200">
-        Monitoring weather patterns to prepare for storms and emergencies.
-      </p>
-    </header>
-
-    <div class="flex justify-center items-center mb-12 space-x-4 flex-wrap gap-2">
-      <button id="btn-weather" class="px-6 py-3 rounded-full font-semibold text-lg transition-colors duration-300 bg-white text-[#500000] shadow-lg">
-        Weather Monitoring
-      </button>
-      <button id="btn-political" class="px-6 py-3 rounded-full font-semibold text-lg transition-colors duration-300 bg-white bg-opacity-20 text-white hover:bg-opacity-30">
-        Political Intelligence
-      </button>
-      <button id="btn-both" class="px-6 py-3 rounded-full font-semibold text-lg transition-colors duration-300 bg-white bg-opacity-20 text-white hover:bg-opacity-30">
-        Comparative View
-      </button>
-    </div>
-    
-    <div id="content-container" class="grid grid-cols-1 gap-8 items-stretch">
-      </div>
+<div class="container">
+  <div class="header">
+    <h1 id="main-title" class="title">Weather Monitoring</h1>
+    <p id="main-description" class="description">
+      Monitoring weather patterns to prepare for storms and emergencies.
+    </p>
   </div>
+
+  <div class="buttons">
+    <button id="btn-weather" class="btn btn-active">Weather Monitoring</button>
+    <button id="btn-political" class="btn btn-inactive">Political Intelligence</button>
+    <button id="btn-both" class="btn btn-inactive">Comparative View</button>
+  </div>
+  
+  <div id="content-container" class="content single-column"></div>
 </div>
 
 <script>
-  // Helper function to create an element with Tailwind classes
-  function createElement(tag, classes = [], content = '') {
-    const el = document.createElement(tag);
-    el.className = classes.join(' ');
-    if (content) {
-      el.innerHTML = content;
-    }
-    return el;
-  }
-
-  // SVG Icons for the cards
-  const icons = {
-    weatherIcon: `<svg xmlns="http://www.w3.org/2000/svg" width="96" height="96" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-16 h-16 text-white animate-pulse-light"><path d="M17.5 18H7a4 4 0 1 0 0 8h10.5a4.5 4.5 0 0 0 0-9H15"/><path d="m8 11 4 4 4-4"/><path d="M12 15V3"/></svg>`,
-    users: `<svg xmlns="http://www.w3.org/2000/svg" width="96" height="96" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-16 h-16 text-white animate-pulse-light"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>`,
-    hexagon: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6 text-white"><path d="M21.5 12L12 1.5 2.5 12 12 22.5z"/></svg>`,
-    alert: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6 text-white"><path d="M10.29 3.86L1.82 18a2 4 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>`,
-    shield: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6 text-white"><path d="M20 13c0 5-2 7-2 7H6s-2-2-2-7V5l8-3 8 3v8z"/></svg>`,
-    repeat: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6 text-white"><path d="M17 1l4 4-4 4"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><path d="M7 23l-4-4 4-4"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>`,
-    network: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6 text-white"><path d="M10 20h4V4h-4v16zM2 13v4h4v-4H2zM18 7v4h4V7h-4zM2 20h20M12 2v20"/></svg>`,
-    compass: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6 text-white"><circle cx="12" cy="12" r="10"/><path d="M16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76z"/></svg>`,
-    checkCircle: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6 text-white"><path d="M22 11.08V12a10 10 0 1 1-5.93-8.5"/><polyline points="22 4 12 14.01 9 11.01"/></svg>`
+  // Simple SVG icons as strings
+  const svgIcons = {
+    cloud: '<svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"/></svg>',
+    users: '<svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>',
+    hexagon: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><polygon points="12 2 22 8.5 22 15.5 12 22 2 15.5 2 8.5 12 2"/></svg>',
+    alert: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>',
+    refresh: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>',
+    shield: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>',
+    network: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><rect x="4" y="4" width="6" height="6" rx="1" ry="1"/><rect x="14" y="4" width="6" height="6" rx="1" ry="1"/><rect x="4" y="14" width="6" height="6" rx="1" ry="1"/><rect x="14" y="14" width="6" height="6" rx="1" ry="1"/></svg>',
+    compass: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg>',
+    check: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>'
   };
 
-  // Content for each view
   const contentData = {
     weather: [
       {
         title: "Pattern Recognition",
-        icon: icons.hexagon,
+        icon: svgIcons.hexagon,
         description: "Identifying weather conditions that could affect emergency operations, like a cold front meeting a warm front."
       },
       {
         title: "Early Warning Systems",
-        icon: icons.alert,
+        icon: svgIcons.alert,
         description: "Information networks like doppler radar and satellite imagery that provide advance notice of storms."
       },
       {
         title: "Adaptive Preparation",
-        icon: icons.repeat,
+        icon: svgIcons.refresh,
         description: "Adjusting emergency plans and resource allocation based on a storm's shift in direction."
       },
       {
         title: "Professional Service",
-        icon: icons.shield,
+        icon: svgIcons.shield,
         description: "Using meteorological intelligence to serve community safety, not for personal or political gain."
       }
     ],
     political: [
       {
         title: "Pattern Recognition",
-        icon: icons.network,
+        icon: svgIcons.network,
         description: "Identifying political conditions that could affect coordination sustainability, such as a shift in a key stakeholder's support."
       },
       {
         title: "Early Warning Systems",
-        icon: icons.compass,
+        icon: svgIcons.compass,
         description: "Information networks like key relationships and open-source data that provide advance notice of political shifts."
       },
       {
         title: "Adaptive Preparation",
-        icon: icons.repeat,
+        icon: svgIcons.refresh,
         description: "Adjusting executive approaches and communication strategies based on changing political dynamics."
       },
       {
         title: "Professional Service",
-        icon: icons.checkCircle,
+        icon: svgIcons.check,
         description: "Using political intelligence to serve the organization's mission and community, not for personal advantage."
       }
     ]
@@ -143,115 +288,128 @@
     btnBoth: document.getElementById('btn-both')
   };
 
-  function createCard(data, isPolitical, viewType) {
-    const cardContainer = createElement('div', [
-      'p-4', 'rounded-3xl', 'shadow-lg', 'border', 'border-gray-400', 
-      'bg-white', 'bg-opacity-5', 'transform', 'hover:scale-105', 
-      'transition-transform', 'duration-300', 'relative'
-    ]);
-
-    const headerDiv = createElement('div', ['flex', 'items-center', 'mb-4'], data.icon);
-    const titleEl = createElement('h3', ['text-xl', 'font-bold', 'ml-3', 'text-white'], data.title);
-    headerDiv.appendChild(titleEl);
-
-    const descriptionEl = createElement('p', ['text-sm', 'md:text-base', 'leading-relaxed', 'text-gray-200'], data.description);
-
-    cardContainer.appendChild(headerDiv);
-    cardContainer.appendChild(descriptionEl);
-
-    return cardContainer;
+  function createCard(data) {
+    return `
+      <div class="card">
+        <div class="card-header">
+          <div class="card-icon">${data.icon}</div>
+          <h3 class="card-title">${data.title}</h3>
+        </div>
+        <p class="card-description">${data.description}</p>
+      </div>
+    `;
   }
 
-  // Handle a change in the view
   function setView(viewType) {
-    // Reset button styles
-    elements.btnWeather.className = 'px-6 py-3 rounded-full font-semibold text-lg transition-colors duration-300 bg-white bg-opacity-20 text-white hover:bg-opacity-30';
-    elements.btnPolitical.className = 'px-6 py-3 rounded-full font-semibold text-lg transition-colors duration-300 bg-white bg-opacity-20 text-white hover:bg-opacity-30';
-    elements.btnBoth.className = 'px-6 py-3 rounded-full font-semibold text-lg transition-colors duration-300 bg-white bg-opacity-20 text-white hover:bg-opacity-30';
+    // Reset all buttons
+    elements.btnWeather.className = 'btn btn-inactive';
+    elements.btnPolitical.className = 'btn btn-inactive';
+    elements.btnBoth.className = 'btn btn-inactive';
 
-    // Update button, title, and background based on view
     if (viewType === 'weather') {
-      elements.btnWeather.className = 'px-6 py-3 rounded-full font-semibold text-lg transition-colors duration-300 bg-white text-[#500000] shadow-lg';
+      elements.btnWeather.className = 'btn btn-active';
       elements.mainTitle.textContent = 'Weather Monitoring';
       elements.mainDescription.textContent = 'Monitoring weather patterns to prepare for storms and emergencies.';
-      elements.body.className = 'bg-gradient-weather text-gray-200';
-      elements.contentContainer.className = 'grid grid-cols-1 gap-8 items-stretch';
-      elements.contentContainer.innerHTML = `
-        <div class="flex flex-col items-center">
-          <div class="rounded-full p-6 mb-4 shadow-lg transition-colors duration-700 bg-indigo-600">
-            ${icons.weatherIcon}
+      elements.body.className = 'bg-weather';
+      elements.contentContainer.className = 'content single-column';
+      
+      let html = `
+        <div class="category-header">
+          <div class="icon-container icon-weather">
+            <div class="icon-pulse">${svgIcons.cloud}</div>
           </div>
-          <h2 class="text-2xl font-bold text-center mb-4 transition-colors duration-700 text-white">
-            Emergency Management
-          </h2>
+          <h2 class="category-title">Emergency Management</h2>
+          <p class="category-subtitle">Weather pattern analysis for disaster preparedness</p>
         </div>
+        <div class="cards-grid">
       `;
-      contentData.weather.forEach(data => elements.contentContainer.appendChild(createCard(data, false, viewType)));
+      
+      contentData.weather.forEach(item => {
+        html += createCard(item);
+      });
+      
+      html += '</div>';
+      elements.contentContainer.innerHTML = html;
+      
     } else if (viewType === 'political') {
-      elements.btnPolitical.className = 'px-6 py-3 rounded-full font-semibold text-lg transition-colors duration-300 bg-white text-[#500000] shadow-lg';
+      elements.btnPolitical.className = 'btn btn-active';
       elements.mainTitle.textContent = 'Political Intelligence';
       elements.mainDescription.textContent = 'Monitoring political dynamics to prepare for coordination challenges.';
-      elements.body.className = 'bg-gradient-political text-gray-200';
-      elements.contentContainer.className = 'grid grid-cols-1 gap-8 items-stretch';
-      elements.contentContainer.innerHTML = `
-        <div class="flex flex-col items-center">
-          <div class="rounded-full p-6 mb-4 shadow-lg transition-colors duration-700 bg-[#500000]">
-            ${icons.users}
+      elements.body.className = 'bg-political';
+      elements.contentContainer.className = 'content single-column';
+      
+      let html = `
+        <div class="category-header">
+          <div class="icon-container icon-political">
+            <div class="icon-pulse">${svgIcons.users}</div>
           </div>
-          <h2 class="text-2xl font-bold text-center mb-4 transition-colors duration-700 text-white">
-            Executive Leadership
-          </h2>
+          <h2 class="category-title">Executive Leadership</h2>
+          <p class="category-subtitle">Political dynamics analysis for organizational resilience</p>
         </div>
+        <div class="cards-grid">
       `;
-      contentData.political.forEach(data => elements.contentContainer.appendChild(createCard(data, true, viewType)));
+      
+      contentData.political.forEach(item => {
+        html += createCard(item);
+      });
+      
+      html += '</div>';
+      elements.contentContainer.innerHTML = html;
+      
     } else if (viewType === 'both') {
-      elements.btnBoth.className = 'px-6 py-3 rounded-full font-semibold text-lg transition-colors duration-300 bg-white text-gray-800 shadow-lg';
+      elements.btnBoth.className = 'btn btn-active';
       elements.mainTitle.textContent = 'Political Intelligence as Weather Monitoring';
-      elements.mainDescription.textContent = 'A comparative view of both concepts.';
-      elements.body.className = 'bg-gradient-political text-gray-200';
-      elements.contentContainer.className = 'grid grid-cols-1 md:grid-cols-2 gap-8 items-stretch';
-
-      // Create the two columns
-      const weatherColumn = createElement('div', ['space-y-6', 'flex-1']);
-      weatherColumn.innerHTML = `
-        <div class="flex flex-col items-center mb-6">
-          <div class="rounded-full p-6 mb-4 shadow-lg transition-colors duration-700 bg-indigo-600">
-            ${icons.weatherIcon}
+      elements.mainDescription.textContent = 'A comparative view of pattern recognition in both domains.';
+      elements.body.className = 'bg-political';
+      elements.contentContainer.className = 'content two-columns';
+      
+      let html = `
+        <div>
+          <div class="category-header">
+            <div class="icon-container icon-weather">
+              <div class="icon-pulse">${svgIcons.cloud}</div>
+            </div>
+            <h2 class="category-title">Emergency Management</h2>
           </div>
-          <h2 class="text-2xl font-bold text-center mb-4 transition-colors duration-700 text-white">
-            Emergency Management
-          </h2>
+          <div style="display: grid; gap: 1.5rem;">
+      `;
+      
+      contentData.weather.forEach(item => {
+        html += createCard(item);
+      });
+      
+      html += `
+          </div>
+        </div>
+        <div>
+          <div class="category-header">
+            <div class="icon-container icon-political">
+              <div class="icon-pulse">${svgIcons.users}</div>
+            </div>
+            <h2 class="category-title">Executive Leadership</h2>
+          </div>
+          <div style="display: grid; gap: 1.5rem;">
+      `;
+      
+      contentData.political.forEach(item => {
+        html += createCard(item);
+      });
+      
+      html += `
+          </div>
         </div>
       `;
       
-      const politicalColumn = createElement('div', ['space-y-6', 'flex-1']);
-      politicalColumn.innerHTML = `
-        <div class="flex flex-col items-center mb-6">
-          <div class="rounded-full p-6 mb-4 shadow-lg transition-colors duration-700 bg-[#500000]">
-            ${icons.users}
-          </div>
-          <h2 class="text-2xl font-bold text-center mb-4 transition-colors duration-700 text-white">
-            Executive Leadership
-          </h2>
-        </div>
-      `;
-
-      // Render cards into the respective columns
-      contentData.weather.forEach(data => weatherColumn.appendChild(createCard(data, false, viewType)));
-      contentData.political.forEach(data => politicalColumn.appendChild(createCard(data, true, viewType)));
-      
-      elements.contentContainer.innerHTML = '';
-      elements.contentContainer.appendChild(weatherColumn);
-      elements.contentContainer.appendChild(politicalColumn);
+      elements.contentContainer.innerHTML = html;
     }
   }
 
-  // Event listeners for buttons
+  // Event listeners
   elements.btnWeather.addEventListener('click', () => setView('weather'));
   elements.btnPolitical.addEventListener('click', () => setView('political'));
   elements.btnBoth.addEventListener('click', () => setView('both'));
 
-  // Initial render
+  // Initialize
   setView('weather');
 </script>
 
