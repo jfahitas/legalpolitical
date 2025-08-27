@@ -57,8 +57,7 @@
     </div>
     
     <div id="content-container" class="grid grid-cols-1 gap-8 items-stretch">
-      <!-- Content will be injected here by JavaScript -->
-    </div>
+      </div>
   </div>
 </div>
 
@@ -67,16 +66,18 @@
   function createElement(tag, classes = [], content = '') {
     const el = document.createElement(tag);
     el.className = classes.join(' ');
-    el.innerHTML = content;
+    if (content) {
+      el.innerHTML = content;
+    }
     return el;
   }
 
   // SVG Icons for the cards
   const icons = {
-    cloudLightning: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-16 h-16 text-white animate-pulse-light"><path d="M6 16.32a2 2 0 1 1-3.65-1.46A4.99 4.99 0 0 1 8 9h.44a5 5 0 0 1 9.31 1.8 2 2 0 1 1-3.13 1.93"></path><path d="M13.5 14.5 11 20l3-5h-3l2.5-5.5"></path></svg>`,
-    users: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-16 h-16 text-white animate-pulse-light"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>`,
-    cloud: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6 text-white"><path d="M17.5 18H19a2 2 0 0 0 1.84-2.74A2 2 0 0 0 18.26 14M17.5 18a2 2 0 0 1-1.1-1.89m1.1 1.89h-1.1M17.5 18A2 2 0 0 0 16 16.5M6.5 18a2 2 0 0 1-1.82-1.16A4 4 0 0 1 4 14.5a4 4 0 0 1 .53-2.61M6.5 18H4M4 14.5a4 4 0 0 1 4-4c.67 0 1.33.09 2 .24a2 2 0 0 1 2-.24h3.5a4 4 0 0 1 0 8H17.5a2.5 2.5 0 0 0 0-5c-.75 0-1.47.16-2.13.43a.5.5 0 0 1-.61-.09l-.44-.5c-.64-.9-1.63-1.43-2.76-1.43c-.35 0-.7.04-1.03.1A3.5 3.5 0 0 0 7.5 10.5M4 14.5V18"/></svg>`,
-    bell: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6 text-white"><path d="M6 8a6 6 0 0 1 12 0c0 7-3 9-3 9H3s.34-2.22 3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>`,
+    weatherIcon: `<svg xmlns="http://www.w3.org/2000/svg" width="96" height="96" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-16 h-16 text-white animate-pulse-light"><path d="M17.5 18H7a4 4 0 1 0 0 8h10.5a4.5 4.5 0 0 0 0-9H15"/><path d="m8 11 4 4 4-4"/><path d="M12 15V3"/></svg>`,
+    users: `<svg xmlns="http://www.w3.org/2000/svg" width="96" height="96" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-16 h-16 text-white animate-pulse-light"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>`,
+    hexagon: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6 text-white"><path d="M21.5 12L12 1.5 2.5 12 12 22.5z"/></svg>`,
+    alert: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6 text-white"><path d="M10.29 3.86L1.82 18a2 4 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>`,
     shield: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6 text-white"><path d="M20 13c0 5-2 7-2 7H6s-2-2-2-7V5l8-3 8 3v8z"/></svg>`,
     repeat: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6 text-white"><path d="M17 1l4 4-4 4"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><path d="M7 23l-4-4 4-4"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>`,
     network: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6 text-white"><path d="M10 20h4V4h-4v16zM2 13v4h4v-4H2zM18 7v4h4V7h-4zM2 20h20M12 2v20"/></svg>`,
@@ -89,12 +90,12 @@
     weather: [
       {
         title: "Pattern Recognition",
-        icon: icons.cloud,
+        icon: icons.hexagon,
         description: "Identifying weather conditions that could affect emergency operations, like a cold front meeting a warm front."
       },
       {
         title: "Early Warning Systems",
-        icon: icons.bell,
+        icon: icons.alert,
         description: "Information networks like doppler radar and satellite imagery that provide advance notice of storms."
       },
       {
@@ -142,30 +143,23 @@
     btnBoth: document.getElementById('btn-both')
   };
 
-  // Render the cards for a given view
-  function renderCards(viewType) {
-    elements.contentContainer.innerHTML = ''; // Clear previous content
+  function createCard(data, isPolitical, viewType) {
+    const cardContainer = createElement('div', [
+      'p-4', 'rounded-3xl', 'shadow-lg', 'border', 'border-gray-400', 
+      'bg-white', 'bg-opacity-5', 'transform', 'hover:scale-105', 
+      'transition-transform', 'duration-300', 'relative'
+    ]);
 
-    const cards = contentData[viewType].map(data => {
-      const cardContainer = createElement('div', [
-        'p-4', 'rounded-3xl', 'shadow-lg', 'border', 'border-gray-400', 
-        'bg-white', 'bg-opacity-5', 'transform', 'hover:scale-105', 
-        'transition-transform', 'duration-300', 'relative'
-      ]);
+    const headerDiv = createElement('div', ['flex', 'items-center', 'mb-4'], data.icon);
+    const titleEl = createElement('h3', ['text-xl', 'font-bold', 'ml-3', 'text-white'], data.title);
+    headerDiv.appendChild(titleEl);
 
-      const headerDiv = createElement('div', ['flex', 'items-center', 'mb-4'], data.icon);
-      const titleEl = createElement('h3', ['text-xl', 'font-bold', 'ml-3', 'text-white'], data.title);
-      headerDiv.appendChild(titleEl);
+    const descriptionEl = createElement('p', ['text-sm', 'md:text-base', 'leading-relaxed', 'text-gray-200'], data.description);
 
-      const descriptionEl = createElement('p', ['text-sm', 'md:text-base', 'leading-relaxed', 'text-gray-200'], data.description);
+    cardContainer.appendChild(headerDiv);
+    cardContainer.appendChild(descriptionEl);
 
-      cardContainer.appendChild(headerDiv);
-      cardContainer.appendChild(descriptionEl);
-
-      return cardContainer;
-    });
-
-    cards.forEach(card => elements.contentContainer.appendChild(card));
+    return cardContainer;
   }
 
   // Handle a change in the view
@@ -185,14 +179,14 @@
       elements.contentContainer.innerHTML = `
         <div class="flex flex-col items-center">
           <div class="rounded-full p-6 mb-4 shadow-lg transition-colors duration-700 bg-indigo-600">
-            ${icons.cloudLightning}
+            ${icons.weatherIcon}
           </div>
           <h2 class="text-2xl font-bold text-center mb-4 transition-colors duration-700 text-white">
             Emergency Management
           </h2>
         </div>
       `;
-      renderCards('weather');
+      contentData.weather.forEach(data => elements.contentContainer.appendChild(createCard(data, false, viewType)));
     } else if (viewType === 'political') {
       elements.btnPolitical.className = 'px-6 py-3 rounded-full font-semibold text-lg transition-colors duration-300 bg-white text-[#500000] shadow-lg';
       elements.mainTitle.textContent = 'Political Intelligence';
@@ -209,7 +203,7 @@
           </h2>
         </div>
       `;
-      renderCards('political');
+      contentData.political.forEach(data => elements.contentContainer.appendChild(createCard(data, true, viewType)));
     } else if (viewType === 'both') {
       elements.btnBoth.className = 'px-6 py-3 rounded-full font-semibold text-lg transition-colors duration-300 bg-white text-gray-800 shadow-lg';
       elements.mainTitle.textContent = 'Political Intelligence as Weather Monitoring';
@@ -217,12 +211,12 @@
       elements.body.className = 'bg-gradient-political text-gray-200';
       elements.contentContainer.className = 'grid grid-cols-1 md:grid-cols-2 gap-8 items-stretch';
 
-      // Create and append the two columns
+      // Create the two columns
       const weatherColumn = createElement('div', ['space-y-6', 'flex-1']);
       weatherColumn.innerHTML = `
         <div class="flex flex-col items-center mb-6">
           <div class="rounded-full p-6 mb-4 shadow-lg transition-colors duration-700 bg-indigo-600">
-            ${icons.cloudLightning}
+            ${icons.weatherIcon}
           </div>
           <h2 class="text-2xl font-bold text-center mb-4 transition-colors duration-700 text-white">
             Emergency Management
@@ -243,42 +237,10 @@
       `;
 
       // Render cards into the respective columns
-      contentData.weather.forEach(data => {
-        const cardContainer = createElement('div', [
-          'p-4', 'rounded-3xl', 'shadow-lg', 'border', 'border-gray-400', 
-          'bg-white', 'bg-opacity-5', 'transform', 'hover:scale-105', 
-          'transition-transform', 'duration-300', 'relative'
-        ]);
-
-        const headerDiv = createElement('div', ['flex', 'items-center', 'mb-4'], data.icon);
-        const titleEl = createElement('h3', ['text-xl', 'font-bold', 'ml-3', 'text-white'], data.title);
-        headerDiv.appendChild(titleEl);
-        
-        const descriptionEl = createElement('p', ['text-sm', 'md:text-base', 'leading-relaxed', 'text-gray-200'], data.description);
-        
-        cardContainer.appendChild(headerDiv);
-        cardContainer.appendChild(descriptionEl);
-        weatherColumn.appendChild(cardContainer);
-      });
-
-      contentData.political.forEach(data => {
-        const cardContainer = createElement('div', [
-          'p-4', 'rounded-3xl', 'shadow-lg', 'border', 'border-gray-400', 
-          'bg-white', 'bg-opacity-5', 'transform', 'hover:scale-105', 
-          'transition-transform', 'duration-300', 'relative'
-        ]);
-
-        const headerDiv = createElement('div', ['flex', 'items-center', 'mb-4'], data.icon);
-        const titleEl = createElement('h3', ['text-xl', 'font-bold', 'ml-3', 'text-white'], data.title);
-        headerDiv.appendChild(titleEl);
-        
-        const descriptionEl = createElement('p', ['text-sm', 'md:text-base', 'leading-relaxed', 'text-gray-200'], data.description);
-        
-        cardContainer.appendChild(headerDiv);
-        cardContainer.appendChild(descriptionEl);
-        politicalColumn.appendChild(cardContainer);
-      });
+      contentData.weather.forEach(data => weatherColumn.appendChild(createCard(data, false, viewType)));
+      contentData.political.forEach(data => politicalColumn.appendChild(createCard(data, true, viewType)));
       
+      elements.contentContainer.innerHTML = '';
       elements.contentContainer.appendChild(weatherColumn);
       elements.contentContainer.appendChild(politicalColumn);
     }
